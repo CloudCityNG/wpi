@@ -15,7 +15,7 @@
     );
 
     //Execute SQL statement
-    $delete_result = mysqli_query($vconn_creativeangels, $sql_delete);
+    $delete_result = mysqli_query($vconn_wpi, $sql_delete);
 
     if($delete_result) {
 
