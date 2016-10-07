@@ -10,7 +10,7 @@
     require('inc-conn.php');
     require('inc-function-escapestring.php');
 
-    $sql_delete = sprintf("DELETE FROM tblconferences WHERE eid = %u",
+    $sql_delete = sprintf("DELETE FROM tblconferences WHERE cid = %u",
     escapestring($vconn_wpi, $vId, 'int')
     );
 
