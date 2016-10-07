@@ -12,6 +12,10 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
   $vCity = ucfirst(strtolower(sanitize('txtCity')));
   $vCountry = ucfirst(strtolower(sanitize('txtCountry')));
 
+  $date = DateTime::createFromFormat("Y-m-d", $vEndDate);
+  $year = $date->format("Y");
+
+
   // --------------------- CHECK VALIDATION -----------------------
   if($vTitle && $vTheme) {
 
@@ -24,18 +28,18 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
     // Connect to mysql server
     require('inc-conn.php');
 
-    // The proper way to insert sql statement (SQL Injection)
-    // The first specifier (%s) corresponds to the first escapestring function as so on and so forth
-    $sql_insert = sprintf("INSERT INTO tblconferences (ctitle, cdetails, ctheme, cenddate, cstartdate, ccity, ccountry) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+    // Building query string
+    $sql_insert = sprintf("INSERT INTO tblconferences (ctitle, cdetails, ctheme, cyear, cenddate, cstartdate, ccity, ccountry) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
       escapestring($vconn_wpi, $vTitle, 'text'),
       escapestring($vconn_wpi, $vDetails, 'text'),
       escapestring($vconn_wpi, $vTheme, 'text'),
+      escapestring($vconn_wpi, $year, 'text'),
       escapestring($vconn_wpi, $vEndDate, 'text'),
       escapestring($vconn_wpi, $vStartDate, 'text'),
       escapestring($vconn_wpi, $vCity, 'text'),
       escapestring($vconn_wpi, $vCountry, 'text')
     );
-    echo $sql_insert;
+
     // Execute insert statement
     $vinsert_results = mysqli_query($vconn_wpi, $sql_insert);
 
@@ -45,8 +49,7 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
       exit();
 
     } else {
-      echo 'db';
-      //header('Location: signout.php');
+      header('Location: signout.php');
       exit();
 
     }

@@ -149,7 +149,7 @@ function displayTxt($keyValue){
       function enddatemin(){
         let enddate = document.getElementById('enddate');
         let minVal = document.getElementById('startdate').value;
-
+        
         enddate.min = minVal;
       }
 
