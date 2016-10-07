@@ -163,10 +163,16 @@ $rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
             'txtSecurity': info.security
           },
           success: function(result) {
-            // Remove event record
-            btn.parents('.team-card').remove();
-            // Toast
-            mw.deleteToast('Event was deleted', '#main-content');
+
+            if (result) {
+              // Remove event record
+              btn.parents('.team-card').remove();
+              // Toast
+              mw.deleteToast('Conference was deleted', '#main-content');
+            } else {
+              mw.deleteToast('Conference could not be deleted', '#main-content');
+            }
+
 
           }
         });

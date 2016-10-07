@@ -19,12 +19,12 @@
 
     if($delete_result) {
 
-      echo "record deleted";
+      echo true;
       exit();
 
     } else {
 
-      echo 'Record could not be deleted';
+      echo false;
       exit();
 
     }
