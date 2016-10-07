@@ -60,16 +60,16 @@ $rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
                 <tr class="tbl-heading">
 
                   <td colspan="5">
-                    <strong><?php echo $rs_conferences_rows['etitle']; ?></strong>
+                    <strong><?php echo $rs_conferences_rows['ctitle']; ?></strong>
                   </td>
                   <td class=button-set >
                     <form method="post" action="conferences-update-display.php">
                       <button>Edit <span class="fa fa-pencil"></span></button>
-                      <input type="hidden" name="txtId" value="<?php echo $rs_conferences_rows['eid'];?>">
+                      <input type="hidden" name="txtId" value="<?php echo $rs_conferences_rows['cid'];?>">
                       <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
                     </form>
 
-                    <button type="button" class="danger-btn" name="btnDel" data-security="<?php echo $_SESSION['svSecurity']; ?>" data-id="<?php echo $rs_conferences_rows['eid']; ?>" data-img="<?php echo $rs_conferences_rows['eimg']; ?>">Delete <span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="danger-btn" name="btnDel" data-security="<?php echo $_SESSION['svSecurity']; ?>" data-id="<?php echo $rs_conferences_rows['cid']; ?>" >Delete <span class="fa fa-trash-o"></span></button>
                   </td>
 
                 </tr>
@@ -160,8 +160,7 @@ $rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
           url: 'conferences-delete-ajax-process.php',
           data: {
             'txtId': info.id,
-            'txtSecurity': info.security,
-            'txtImgStr' : info.img
+            'txtSecurity': info.security
           },
           success: function(result) {
             // Remove event record

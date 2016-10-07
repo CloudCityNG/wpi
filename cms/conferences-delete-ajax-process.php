@@ -10,8 +10,8 @@
     require('inc-conn.php');
     require('inc-function-escapestring.php');
 
-    $sql_delete = sprintf("DELETE FROM tblevents WHERE eid = %u",
-    escapestring($vconn_creativeangels, $vId, 'int')
+    $sql_delete = sprintf("DELETE FROM tblconferences WHERE eid = %u",
+    escapestring($vconn_wpi, $vId, 'int')
     );
 
     //Execute SQL statement
@@ -19,16 +19,7 @@
 
     if($delete_result) {
 
-      $img_str = $_POST['txtImgStr'];
-
-      $img_arr = explode(', ', $img_str);
-
-      foreach ($img_arr as $key => $value) {
-        $dir = "../assets/uploads/events/";
-        
-        unlink($dir . "large/" . $value);
-        unlink($dir . "thumb/" . $value);
-      }
+      echo "record deleted";
       exit();
 
     } else {
@@ -39,8 +30,7 @@
     }
 
   } else {
-    echo "token";
-    //header('Location: signout.php');
+    header('Location: signout.php');
     exit();
 
   }
