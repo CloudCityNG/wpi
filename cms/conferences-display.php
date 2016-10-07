@@ -109,7 +109,7 @@ $rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
                 <tr>
                   <td>&nbsp;</td>
                   <td colspan="4">
-                    <small><i>Last Modified:  <?php echo $rs_conferences_rows['emodified']; ?></i></small>
+                    <small><i>Last Modified:  <?php echo $rs_conferences_rows['cmodified']; ?></i></small>
                   </td>
                 </tr>
 
@@ -124,7 +124,7 @@ $rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
           <?php } else {?>
 
             <h2 class="accent">There are no conferences to display</h2>
-            <p>Create a new event by navigating to <a href="conferences-add-new.php" title="Create a new event"><i>conferences > Add New</i></a>.
+            <p>Create a new event by navigating to <a href="conferences-add-new.php" title="Create a new event"><i>conferences > Add Conference</i></a>.
 
           <?php }?>
 
