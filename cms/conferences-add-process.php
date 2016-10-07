@@ -4,8 +4,6 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
   // --------------- USER INPUT VALIDATION -------------------------
   include('inc-fn-sanitize.php');
 
-  $errors = array();
-
   $vTitle = ucfirst(strtolower(sanitize('txtTitle')));
   $vDetails = ucfirst(sanitize('txtDetails'));
   $vTheme = ucfirst(sanitize('txtTheme'));
@@ -15,7 +13,7 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
   $vCountry = ucfirst(strtolower(sanitize('txtCountry')));
 
   // --------------------- CHECK VALIDATION -----------------------
-  if($vTitle && $vDescription) {
+  if($vTitle && $vTheme) {
 
     // Connect to mysql server
     require('inc-conn.php');
@@ -28,27 +26,27 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
 
     // The proper way to insert sql statement (SQL Injection)
     // The first specifier (%s) corresponds to the first escapestring function as so on and so forth
-    $sql_insert = sprintf("INSERT INTO tblconferences (etitle, edescription, edate, elocation, etickets, elink, eimg) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-      escapestring($vconn_creativeangels, $vTitle, 'text'),
-      escapestring($vconn_creativeangels, $vDescription, 'text'),
-      escapestring($vconn_creativeangels, $vDate, 'text'),
-      escapestring($vconn_creativeangels, $vLocation, 'text'),
-      escapestring($vconn_creativeangels, $vTickets, 'text'),
-      escapestring($vconn_creativeangels, $vLink, 'text'),
-      escapestring($vconn_creativeangels, $vImg_str, 'text')
+    $sql_insert = sprintf("INSERT INTO tblconferences (ctitle, cdetails, ctheme, cenddate, cstartdate, ccity, ccountry) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+      escapestring($vconn_wpi, $vTitle, 'text'),
+      escapestring($vconn_wpi, $vDetails, 'text'),
+      escapestring($vconn_wpi, $vTheme, 'text'),
+      escapestring($vconn_wpi, $vEndDate, 'text'),
+      escapestring($vconn_wpi, $vStartDate, 'text'),
+      escapestring($vconn_wpi, $vCity, 'text'),
+      escapestring($vconn_wpi, $vCountry, 'text')
     );
-
+    echo $sql_insert;
     // Execute insert statement
-    $vinsert_results = mysqli_query($vconn_creativeangels, $sql_insert);
+    $vinsert_results = mysqli_query($vconn_wpi, $sql_insert);
 
     if($vinsert_results) {
 
-      header('Location: events-display.php');
+      header('Location: conferences-display.php');
       exit();
 
     } else {
-
-      header('Location: signout.php');
+      echo 'db';
+      //header('Location: signout.php');
       exit();
 
     }
@@ -58,19 +56,22 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
     // Validation failed
     $qs = "?kval=failed";
     $qs .= "&ktitle=".urlencode($vTitle);
-    $qs .= "&kdescription=".urlencode($vDescription);
-    $qs .= "&kdate=".urlencode($vDate);
-    $qs .= "&kimg=".urlencode($vImg_str);
+    $qs .= "&kdetails=".urlencode($vDetails);
+    $qs .= "&ktheme=".urlencode($vTheme);
+    $qs .= "&kenddate=".urlencode($vEndDate);
+    $qs .= "&kstartdate=".urlencode($vStartDate);
+    $qs .= "&kcity=".urlencode($vCity);
+    $qs .= "&kcountry=".urlencode($vCountry);
 
-    header('location: events-add-new.php' . $qs);
+    header('location: conferences-add-new.php' . $qs);
     exit();
   }
 
 
 } else {
-
+  echo 'Token';
   // Initial security check failed
-  header("Location: signout.php");
+  //header("Location: signout.php");
   exit();
 }
 ?>

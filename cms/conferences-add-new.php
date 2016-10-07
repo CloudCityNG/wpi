@@ -64,6 +64,9 @@ function displayTxt($keyValue){
 
           <form id="form" class="form" action="conferences-add-process.php" method="post" enctype="multipart/form-data">
 
+            <p><small>Please enter the details for the conference. </small></p>
+            <p><small>The title and them fields are required, the rest of the details you can fill that in later.</small></p>
+
             <!-- EVENT TITLE -->
             <label>Conference Title</label>
 
@@ -81,23 +84,25 @@ function displayTxt($keyValue){
 
             <!-- DESCRIPTION -->
             <label>Details</label>
+            <p><small>Extra details that has no field</small></p>
 
             <?php echo errorMsg('kdetails', 'details'); ?>
 
-            <textarea name="txtDetails" required><?php echo displayTxt('kdetails'); ?></textarea>
+            <textarea name="txtDetails"><?php echo displayTxt('kdetails'); ?></textarea>
 
             <h3 class="accent">When <span class="fa fa-calendar"></span></h3>
+
             <!-- START DATE -->
             <label>Start Date </label>
 
             <?php echo errorMsg('kstartdate', 'start date'); ?>
-            <input type="date" name="txtStartDate" value="<?php echo displayTxt('kstartdate'); ?>" required>
+            <input id="startdate" type="date" name="txtStartDate" value="<?php echo displayTxt('kstartdate'); ?>" min="<?php echo date('Y-m-d');?>" onblur="enddatemin()">
 
             <!-- END DATE -->
             <label>End Date</label>
 
             <?php echo errorMsg('kenddate', 'end date'); ?>
-            <input type="date" name="txtEndDate" value="<?php echo displayTxt('kenddate'); ?>" required>
+            <input id="enddate" type="date" name="txtEndDate" value="<?php echo displayTxt('kenddate'); ?>">
 
             <h3 class="accent">Where <span class="fa fa-map-marker"></span></h3>
 
@@ -105,7 +110,7 @@ function displayTxt($keyValue){
             <label>City </label>
 
             <?php echo errorMsg('kcity', 'city'); ?>
-            <input type="text" name="txtCity" value="<?php echo displayTxt('kcity'); ?>" required>
+            <input type="text" name="txtCity" value="<?php echo displayTxt('kcity'); ?>">
 
             <label>Country </label>
 
@@ -139,5 +144,15 @@ function displayTxt($keyValue){
 
     <script src="js/accordian.js"></script>
     <script src="js/country-picker.js"></script>
+    <script>
+
+      function enddatemin(){
+        let enddate = document.getElementById('enddate');
+        let minVal = document.getElementById('startdate').value;
+
+        enddate.min = minVal;
+      }
+
+    </script>
   </body>
 </html>

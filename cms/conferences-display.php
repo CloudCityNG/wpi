@@ -1,19 +1,19 @@
 <?php require('inc-cms-pre-doctype.php'); ?>
 <?php
 // Create SQL statement to fetch all records from tblcontactdetails
-$sql_events = "SELECT * FROM tblevents";
+$sql_conferences = "SELECT * FROM tblconferences";
 
 //Connect to MYSQL Server
 require('inc-conn.php');
 
 //Execute SQL statement
-$rs_events = mysqli_query($vconn_creativeangels, $sql_events);
+$rs_conferences = mysqli_query($vconn_wpi, $sql_conferences);
 
 //Create associative Array
-$rs_events_rows = mysqli_fetch_assoc($rs_events);
+$rs_conferences_rows = mysqli_fetch_assoc($rs_conferences);
 
 //Count the entries into the record set
-$rs_events_rows_total = mysqli_num_rows($rs_events);
+$rs_conferences_rows_total = mysqli_num_rows($rs_conferences);
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +42,7 @@ $rs_events_rows_total = mysqli_num_rows($rs_events);
 
           <!-- Page title -->
           <div class="page-header">
-            <h2>Events</h2>
+            <h2>Conferences</h2>
           </div>
 
         </header>
@@ -50,76 +50,66 @@ $rs_events_rows_total = mysqli_num_rows($rs_events);
         <!-- MAIN CONTENT SECTION -->
         <section id="main-content" class="base">
 
-          <?php if($rs_events_rows_total > 0) { ?>
+          <?php if($rs_conferences_rows_total > 0) { ?>
 
           <?php do { ?>
-            <div class="team-card" id="events<?php echo $rs_events_rows['eid']; ?>">
+            <div class="team-card" id="conferences<?php echo $rs_conferences_rows['eid']; ?>">
 
               <table cellspacing="0" class="tbldatadisplay">
 
                 <tr class="tbl-heading">
 
                   <td colspan="5">
-                    <strong><?php echo $rs_events_rows['etitle']; ?></strong>
+                    <strong><?php echo $rs_conferences_rows['etitle']; ?></strong>
                   </td>
                   <td class=button-set >
-                    <form method="post" action="events-update-display.php">
+                    <form method="post" action="conferences-update-display.php">
                       <button>Edit <span class="fa fa-pencil"></span></button>
-                      <input type="hidden" name="txtId" value="<?php echo $rs_events_rows['eid'];?>">
+                      <input type="hidden" name="txtId" value="<?php echo $rs_conferences_rows['eid'];?>">
                       <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
                     </form>
 
-                    <button type="button" class="danger-btn" name="btnDel" data-security="<?php echo $_SESSION['svSecurity']; ?>" data-id="<?php echo $rs_events_rows['eid']; ?>" data-img="<?php echo $rs_events_rows['eimg']; ?>">Delete <span class="fa fa-trash-o"></span></button>
+                    <button type="button" class="danger-btn" name="btnDel" data-security="<?php echo $_SESSION['svSecurity']; ?>" data-id="<?php echo $rs_conferences_rows['eid']; ?>" data-img="<?php echo $rs_conferences_rows['eimg']; ?>">Delete <span class="fa fa-trash-o"></span></button>
                   </td>
 
                 </tr>
                 <tr>
-                  <td rowspan="7" width="250" style="text-align: center">
-                    <?php
-                      $img_str = $rs_events_rows['eimg'];
-                      $img_arr = explode(', ', $img_str);
-
-                      if($img_arr) {
-                        echo '<img src="../assets/uploads/events/large/' . reset($img_arr) .'">';
-                      } else {
-                        echo '<img src="../assets/uploads/events/large/' . $img_str .'">';
-                      }
-                    ?>
-                  </td>
-                  <td width="100" class="accent"><strong>Description</strong></td>
+                  <td width="100" class="accent"><strong>Details</strong></td>
                   <td colspan="4">
-                    <?php echo $rs_events_rows['edescription']; ?>
+                    <?php echo $rs_conferences_rows['cdetails']; ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="100" class="accent"><strong>Theme</strong></td>
+                  <td colspan="4">
+                    <?php echo $rs_conferences_rows['ctheme']; ?>
                   </td>
                 </tr>
                 <tr>
                   <td class="accent"><strong>Date</strong></td>
                   <td colspan="4">
-                  <?php echo $rs_events_rows['edate']; ?>
+                  <?php echo $rs_conferences_rows['cstartdate'] . " - " . $rs_conferences_rows['cenddate']; ?>
                   </td>
                 </tr>
                 <tr>
                   <td class="accent"><strong>Location</strong></td>
                   <td colspan="4">
-                  <?php echo $rs_events_rows['elocation']; ?>
+                  <?php echo $rs_conferences_rows['ccity'] . ", " . $rs_conferences_rows['ccountry']; ?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="accent"><strong>Tickets</strong></td>
-                  <td colspan="4">
-                  <?php echo $rs_events_rows['etickets']; ?>
-                  </td>
                 </tr>
                 <tr>
                   <td class="accent"><strong>Event Url</strong></td>
                   <td colspan="4">
-                    <a class="link" href="<?php echo $rs_events_rows['elink']; ?>" title="Link to event webpage"><?php echo $rs_events_rows['elink']; ?></a>
+                    <a class="link" href="<?php echo $rs_conferences_rows['elink']; ?>" title="Link to event webpage"><?php echo $rs_conferences_rows['elink']; ?></a>
 
                   </td>
                 </tr>
                 <tr>
                   <td>&nbsp;</td>
                   <td colspan="4">
-                    <small><i>Last Modified:  <?php echo $rs_events_rows['emodified']; ?></i></small>
+                    <small><i>Last Modified:  <?php echo $rs_conferences_rows['emodified']; ?></i></small>
                   </td>
                 </tr>
 
@@ -127,14 +117,14 @@ $rs_events_rows_total = mysqli_num_rows($rs_events);
 
             </div>
 
-          <?php } while($rs_events_rows = mysqli_fetch_assoc($rs_events)) ?>
+          <?php } while($rs_conferences_rows = mysqli_fetch_assoc($rs_conferences)) ?>
 
           <div class="clearfix"></div>
 
           <?php } else {?>
 
-            <h2 class="accent">There are no events to display</h2>
-            <p>Create a new event by navigating to <a href="events-add-new.php" title="Create a new event"><i>Events > Add New</i></a>.
+            <h2 class="accent">There are no conferences to display</h2>
+            <p>Create a new event by navigating to <a href="conferences-add-new.php" title="Create a new event"><i>conferences > Add New</i></a>.
 
           <?php }?>
 
@@ -167,7 +157,7 @@ $rs_events_rows_total = mysqli_num_rows($rs_events);
       function deleteRecord(info, btn) {
         $.ajax({
           type: 'POST',
-          url: 'events-delete-ajax-process.php',
+          url: 'conferences-delete-ajax-process.php',
           data: {
             'txtId': info.id,
             'txtSecurity': info.security,
