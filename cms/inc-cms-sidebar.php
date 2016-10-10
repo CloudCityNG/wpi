@@ -24,7 +24,18 @@
   <ul class="submenu">
     <li><a  class="opt-menu"href="conferences-display.php">View</a></li>
     <li><a  class="opt-menu"href="conferences-add-new.php">Add Conference</a></li>
+  </ul>
 
+  <li class="opt-menu">Plays</li>
+  <ul class="submenu">
+    <li><a  class="opt-menu"href="plays-display.php">View</a></li>
+    <li><a  class="opt-menu"href="plays-add-new.php">Add Play</a></li>
+  </ul>
+
+  <li class="opt-menu">Gallery</li>
+  <ul class="submenu">
+    <li><a  class="opt-menu"href="galleries-display.php">View</a></li>
+    <li><a  class="opt-menu"href="galleries-add-new.php">Add Images to Gallery</a></li>
   </ul>
 
   <li class="opt-menu"><a href="../signout.php">Log out</a></li>
