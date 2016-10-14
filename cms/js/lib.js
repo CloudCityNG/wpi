@@ -17,7 +17,6 @@ function addText(text, el) {
 
 // Take up the remaining viewport height
 function fillVH(el) {
-
   // screenheight - el.offset
   var vH = window.innerHeight;
   var topH = el.offsetTop;
@@ -27,7 +26,7 @@ function fillVH(el) {
   // set height on el
   el.style.height = elH + 'px';
 
-  window.addEventListener('resize', function(){
+  window.addEventListener('resize', function() {
     fillVH(el)
   });
 }
