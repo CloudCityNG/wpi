@@ -258,10 +258,16 @@ input, textarea, select {
   outline-color: #777;
 }
 
-.form input, .form textarea, .form select {
+.form input[type="text"], .form input[type="email"], .form input[type="password"], .form textarea {
   margin-top: 0.625em;
   margin-bottom: 1.25em;
   width: 50%;
+  display: block;
+}
+
+.form select, .form input[type="file"] {
+  margin-top: 0.625em;
+  margin-bottom: 1.25em;
   display: block;
 }
 
@@ -338,6 +344,23 @@ input[type="radio"] {
   width: 70%;
 }
 
+#preview {
+  margin: 1.2em 0;
+}
+
+#preview img {
+  margin-left: 0.625em;
+}
+
+.line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #eee;
+  margin: 1.2em 0;
+  margin-top: 2.5em;
+}
+
 .quarter-float figure {
   padding: 0;
   margin: 0;
@@ -350,6 +373,24 @@ input[type="radio"] {
 
 .form.single-col input, .form.single-col textarea {
   width: 70%;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3125em 0.625em;
+  margin-bottom: 0.625em;
+  background: #dae3ee;
+  color: #555;
+}
+
+.filter .button {
+  margin-right: 0;
+}
+
+.filter h3 {
+  margin: 0;
+  align-self: center;
 }
 
 .three4-float {

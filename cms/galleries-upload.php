@@ -64,7 +64,7 @@ function displayTxt($keyValue){
 
           <!-- Page title -->
           <div class="page-header">
-            <h2>Add New Plays</h2>
+            <h2>Create Gallery | 2 of 2</h2>
           </div>
 
         </header>
@@ -74,52 +74,15 @@ function displayTxt($keyValue){
 
           <!--#################### ADD NEW FORM #########################-->
 
-          <form id="form" class="form" action="plays-add-process.php" method="post" enctype="multipart/form-data">
-
-            <p><small>Please enter the details for the play. </small></p>
+          <form id="form" class="form" action="galleries-add-process.php" method="post" enctype="multipart/form-data">
 
             <!-- PLAY TITLE -->
-            <label>Play Title</label>
+            <h3 class="accent">Upload Images <i class="fa fa-picture-o"></i></h3>
 
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('ktitle', 'title'); ?>
+            <label>Select images to upload. Each image must be a jpeg file and smaller than 2MB</label>
+            <input type="file" name="txtImg[]" onchange="displayImg();" autocomplete="off" autofocus value="<?php echo displayTxt('kimg'); ?>" required accept="image/jpeg, image/png" multiple>
 
-            <input type="text" name="txtTitle" autocomplete="off" autofocus value="<?php echo displayTxt('ktitle'); ?>" required>
-
-            <label>Conference Year</label>
-
-            <select name="txtYear">
-              <?php  do {?>
-                <option value="<?php echo $year_rs_rows['cid']; ?>"><?php echo $year_rs_rows['cyear']; ?></option>
-
-                <?php } while($year_rs_rows = mysqli_fetch_assoc($rs_year)) ?>
-
-            </select>
-
-            <!-- PLAY AUTHOR -->
-            <label>Author First Name</label>
-
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('kaname', 'author first name'); ?>
-
-            <input type="text" name="txtAuthName" autocomplete="off" autofocus value="<?php echo displayTxt('kaname'); ?>" required>
-
-            <!-- PLAY Surname -->
-            <label>Author Surname</label>
-
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('kaname', 'author surname'); ?>
-
-            <input type="text" name="txtAuthSurname" autocomplete="off" autofocus value="<?php echo displayTxt('kasurname'); ?>" required>
-
-            <!-- DESCRIPTION -->
-            <label>Synopsis</label>
-            <p><small>Just a brief introduction to the play</small></p>
-
-            <?php echo errorMsg('ksynopsis', 'synopsis'); ?>
-
-            <textarea name="txtSynopsis"><?php echo displayTxt('ksynopsis'); ?></textarea>
-
+            <div id="preview"></div>
 
             <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
 
@@ -128,7 +91,7 @@ function displayTxt($keyValue){
             <div class="button-set">
 
               <!-- submit form -->
-              <button type="submit" name="btnAddNew">Save <span class="fa fa-check"></span></button>
+              <button type="submit" name="btnAddNew">Upload <span class="fa fa-check"></span></button>
 
               <a class="button danger-btn" href="events-display.php" name="btnCancel">Cancel <span class="fa fa-times"></span></a>
 
@@ -144,14 +107,39 @@ function displayTxt($keyValue){
     </div>
 
     <script src="js/accordian.js"></script>
-    <script src="js/country-picker.js"></script>
     <script>
 
-      function enddatemin(){
-        let enddate = document.getElementById('enddate');
-        let minVal = document.getElementById('startdate').value;
+      function displayImg() {
 
-        enddate.min = minVal;
+        // creates an array of all files selected by user
+        var images = document.querySelector('input[name="txtImg[]"]').files;
+        var preview = document.getElementById('preview');
+
+          function readAndPreview(img) {
+            console.log('meh');
+            var reader = new FileReader();
+
+            reader.addEventListener('load', function() {
+
+              // creates new image object
+              var image = new Image();
+
+              image.height = 200;
+              image.title = img.name;
+              image.src = this.result;
+
+              preview.appendChild(image);
+
+            }, false);
+
+            reader.readAsDataURL(img);
+
+          }
+
+        if (images) {
+          [].forEach.call(images, readAndPreview);
+        }
+
       }
 
     </script>

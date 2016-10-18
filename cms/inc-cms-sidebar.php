@@ -35,7 +35,7 @@
   <li class="opt-menu">Gallery</li>
   <ul class="submenu">
     <li><a  class="opt-menu"href="galleries-display.php">View</a></li>
-    <li><a  class="opt-menu"href="galleries-add-new.php">Add Images to Gallery</a></li>
+    <li><a  class="opt-menu"href="galleries-add-new.php">Create Gallery</a></li>
   </ul>
 
   <li class="opt-menu"><a href="../signout.php">Log out</a></li>

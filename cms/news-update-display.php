@@ -15,8 +15,7 @@ if( isset($_GET['txtSecurity']) && $_GET['txtSecurity'] === $_SESSION['svSecurit
  $rs_news_rows = mysqli_fetch_assoc($rs_news);
 
 } else {
-  echo 'security token';
-  //header('Location: signout.php');
+  header('Location: signout.php');
   exit();
 }
 

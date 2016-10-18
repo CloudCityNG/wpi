@@ -5,14 +5,10 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
   include('inc-fn-sanitize.php');
 
   $vTitle = ucfirst(strtolower(sanitize('txtTitle')));
-  $vAName = ucfirst(sanitize('txtAuthName'));
-  $vASurname = ucfirst(sanitize('txtAuthSurname'));
-  $vSynopsis = ucfirst(sanitize('txtSynopsis'));
   $vConId = sanitize('txtYear', 'int');
 
-
-  // --------------------- CHECK VALIDATION -----------------------
-  if($vTitle && $vAName && $vASurname) {
+  // ---------------------- CHECK VALIDATION -----------------------
+  if($vTitle && $vConId) {
 
     // Connect to mysql server
     require('inc-conn.php');
@@ -24,24 +20,23 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
     require('inc-conn.php');
 
     // Building query string
-    $sql_insert = sprintf("INSERT INTO tblplays (ptitle, cid, pauthorname, pauthorsurname, psynopsis) VALUES (%s, %s, %s, %s, %s)",
+    $sql_insert = sprintf("INSERT INTO tblphotos (gtitle, cid) VALUES (%s, %u)",
       escapestring($vconn_wpi, $vTitle, 'text'),
-      escapestring($vconn_wpi, $vConId, 'text'),
-      escapestring($vconn_wpi, $vAName, 'text'),
-      escapestring($vconn_wpi, $vASurname, 'text'),
-      escapestring($vconn_wpi, $vSynopsis, 'text')
+      escapestring($vconn_wpi, $vConId, 'int')
     );
 
     // Execute insert statement
     $vinsert_results = mysqli_query($vconn_wpi, $sql_insert);
 
     if($vinsert_results) {
-
-      header('Location: plays-display.php');
+      $qs = mysqli_insert_id($vconn_wpi);
+      die($qs);
+      header('Location: galleries-upload.php?');
       exit();
 
     } else {
-      header('Location: signout.php');
+      echo 'db';
+      // header('Location: signout.php');
       exit();
 
     }
@@ -51,17 +46,16 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
     // Validation failed
     $qs = "?kval=failed";
     $qs .= "&ktitle=".urlencode($vTitle);
-    $qs .= "&kaname=".urlencode($vAName);
-    $qs .= "&kasurname=".urlencode($vASurname);
-    $qs .= "&ksynopsis=".urlencode($vSynopsis);
 
-    header('location: plays-add-new.php' . $qs);
+    header('location: galleries-add-new.php' . $qs);
     exit();
   }
 
 
 } else {
-  header("Location: signout.php");
+
+  echo 'token';
+  //header("Location: signout.php");
   exit();
 }
 ?>

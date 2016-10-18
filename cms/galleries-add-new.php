@@ -64,7 +64,7 @@ function displayTxt($keyValue){
 
           <!-- Page title -->
           <div class="page-header">
-            <h2>Add New Plays</h2>
+            <h2>Create Gallery | 1 of 2</h2>
           </div>
 
         </header>
@@ -74,52 +74,25 @@ function displayTxt($keyValue){
 
           <!--#################### ADD NEW FORM #########################-->
 
-          <form id="form" class="form" action="plays-add-process.php" method="post" enctype="multipart/form-data">
+          <form id="form" class="form" action="galleries-add-process.php" method="post" enctype="multipart/form-data">
 
-            <p><small>Please enter the details for the play. </small></p>
+            <h3 class="accent">Gallery settings</h3>
 
-            <!-- PLAY TITLE -->
-            <label>Play Title</label>
+            <label>Title</label>
+            <input type="text" name="txtTitle">
 
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('ktitle', 'title'); ?>
-
-            <input type="text" name="txtTitle" autocomplete="off" autofocus value="<?php echo displayTxt('ktitle'); ?>" required>
+            <label>Description</label>
+            <textarea name="txtDescription"></textarea>
 
             <label>Conference Year</label>
 
-            <select name="txtYear">
+            <select name="txtYear" required>
               <?php  do {?>
                 <option value="<?php echo $year_rs_rows['cid']; ?>"><?php echo $year_rs_rows['cyear']; ?></option>
 
                 <?php } while($year_rs_rows = mysqli_fetch_assoc($rs_year)) ?>
 
             </select>
-
-            <!-- PLAY AUTHOR -->
-            <label>Author First Name</label>
-
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('kaname', 'author first name'); ?>
-
-            <input type="text" name="txtAuthName" autocomplete="off" autofocus value="<?php echo displayTxt('kaname'); ?>" required>
-
-            <!-- PLAY Surname -->
-            <label>Author Surname</label>
-
-            <!-- Displays warning message above empty field -->
-            <?php echo errorMsg('kaname', 'author surname'); ?>
-
-            <input type="text" name="txtAuthSurname" autocomplete="off" autofocus value="<?php echo displayTxt('kasurname'); ?>" required>
-
-            <!-- DESCRIPTION -->
-            <label>Synopsis</label>
-            <p><small>Just a brief introduction to the play</small></p>
-
-            <?php echo errorMsg('ksynopsis', 'synopsis'); ?>
-
-            <textarea name="txtSynopsis"><?php echo displayTxt('ksynopsis'); ?></textarea>
-
 
             <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
 
@@ -128,7 +101,7 @@ function displayTxt($keyValue){
             <div class="button-set">
 
               <!-- submit form -->
-              <button type="submit" name="btnAddNew">Save <span class="fa fa-check"></span></button>
+              <button type="submit" name="btnAddNew">Upload <span class="fa fa-arrow-right"></span></button>
 
               <a class="button danger-btn" href="events-display.php" name="btnCancel">Cancel <span class="fa fa-times"></span></a>
 
@@ -144,16 +117,5 @@ function displayTxt($keyValue){
     </div>
 
     <script src="js/accordian.js"></script>
-    <script src="js/country-picker.js"></script>
-    <script>
-
-      function enddatemin(){
-        let enddate = document.getElementById('enddate');
-        let minVal = document.getElementById('startdate').value;
-
-        enddate.min = minVal;
-      }
-
-    </script>
   </body>
 </html>

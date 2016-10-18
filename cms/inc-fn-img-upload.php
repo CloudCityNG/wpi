@@ -38,6 +38,9 @@
 
   } // End of img_resize fn
 
+
+  
+
   function upload($img, $dir, $img_name) {
 
     $img_upload_path = $dir . $img_name;
@@ -46,6 +49,9 @@
     return imagejpeg($img, $img_upload_path, 100);
 
   } // End of upload fn
+
+
+
 
   function img_check($img_tmp, $img_size) {
 
@@ -77,6 +83,7 @@
       $img_arr = array();
 
       if(isset($_FILES[$name])) {
+
         $vmemory = ini_set('memory_limit', '128M');
 
         foreach($_FILES[$name]['tmp_name'] as $key => $tmp_name ){

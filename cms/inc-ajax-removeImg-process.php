@@ -3,7 +3,7 @@
 if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecurity'] && isset($_POST['txtId'])){
 
   $vId = $_POST['txtId'];
-  $vImg_str = $_POST['txtImg'];
+  $vImg_str = $_POST['txtImg']; // file name
   $vDir = $_POST['txtDir'];
   $vTbl = $_POST['txtTbl'];
   $vArr_str = $_POST['txtArr'];
