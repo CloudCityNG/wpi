@@ -1,25 +1,18 @@
 <?php require('inc-cms-pre-doctype.php'); ?>
 <?php require('inc-email-encryption-function.php'); ?>
 <?php
-if (isset($_GET['kid']) && $_GET['kid'] !== '') {
 
     //Extract the id from the array.
     $vid = base64_decode($_GET['kid']);
     // Create SQL statement
-    $sql_contact_details = "SELECT * FROM tblcontactdetails WHERE cid=$vid";
+    $sql_contact = "SELECT * FROM tblcontact WHERE cid=$vid";
     //Connect to MYSQL Server
     require('inc-conn.php');
     //Execute SQL statement
-    $rs_contact_details = mysqli_query($vconn_creativeangels, $sql_contact_details);
+    $rs_contact = mysqli_query($vconn_wpi, $sql_contact);
     //Create associative Array
-    $rs_contact_details_rows = mysqli_fetch_assoc($rs_contact_details);
+    $rs_contact_rows = mysqli_fetch_assoc($rs_contact);
 
-  } else {
-
-  header("Location: signout.php");
-  exit();
-
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,24 +52,24 @@ if (isset($_GET['kid']) && $_GET['kid'] !== '') {
           <table cellspacing="0" class="tbldatadisplay">
 
               <!--On all of these tds I placed an if statement that echos a "not Available" clause to avoid the page displaying "na" when the content is not available. This was optional, however this must not be displayed on the contact page of the contact us page on the front end of the website.-->
-              <tr id="record<?php echo $rs_contact_details_rows['cid']; ?>">
+              <tr id="record<?php echo $rs_contact_rows['cid']; ?>">
               <td  class="accent" width=100><strong>Name:</strong></td>
-              <td><?php echo $rs_contact_details_rows['ccontactpersonname'] . ' ' . $rs_contact_details_rows['ccontactpersonsurname']; ?></td>
+              <td><?php echo $rs_contact_rows['ccontactpersonname'] . ' ' . $rs_contact_rows['ccontactpersonsurname']; ?></td>
               </tr>
 
               <tr>
               <td  class="accent"width=100><strong>Position:</strong></td>
-              <td><?php if ($rs_contact_details_rows['ccontactpersontitle'] !== "na") { echo $rs_contact_details_rows['ccontactpersontitle']; } else { echo "Not Available"; } ?></td>
+              <td><?php if ($rs_contact_rows['ccontactpersontitle'] !== "na") { echo $rs_contact_rows['ccontactpersontitle']; } else { echo "Not Available"; } ?></td>
               </tr>
 
               <tr>
               <td  class="accent"width=100><strong>Office No:</strong></td>
-              <td><?php if ($rs_contact_details_rows['clandline'] !== "na") { echo $rs_contact_details_rows['clandline']; } else { echo "Not Available"; } ?></td>
+              <td><?php if ($rs_contact_rows['clandline'] !== "na") { echo $rs_contact_rows['clandline']; } else { echo "Not Available"; } ?></td>
               </tr>
 
               <tr>
               <td  class="accent"width=100><strong>Cell No:</strong></td>
-              <td><?php if ($rs_contact_details_rows['ccell'] !== "na") { echo $rs_contact_details_rows['ccell']; } else { echo "Not Available"; } ?></td>
+              <td><?php if ($rs_contact_rows['ccell'] !== "na") { echo $rs_contact_rows['ccell']; } else { echo "Not Available"; } ?></td>
               </tr>
               <tr>
              <td  class="accent"width=100><strong>Email:</strong></td>
@@ -84,9 +77,9 @@ if (isset($_GET['kid']) && $_GET['kid'] !== '') {
              <!-- //Creating the e-mail link to display -->
              <td>
                <?php
-              if ($rs_contact_details_rows['cemail'] !== 'na'){
+              if ($rs_contact_rows['cemail'] !== 'na'){
 
-                $email = $rs_contact_details_rows['cemail'];
+                $email = $rs_contact_rows['cemail'];
                 echo '<a href="mailto:' . escapeHex_email($email) . '">' . escapeHexEntity_email($email) . '</a>';
 
               } else {
@@ -100,16 +93,16 @@ if (isset($_GET['kid']) && $_GET['kid'] !== '') {
              <td>
                  <!--I wrote this if statement so that when there is no address available, only the relevant cit y is displayed. normally the code looked like this:
 
-                 <?php echo $rs_contact_details_rows['caddress1'] . ', ' . $rs_contact_details_rows['caddress2'] . ', ' . $rs_contact_details_rows['caddress3'] . ', ' . $rs_contact_details_rows['csuburb'] . ', ' . $rs_contact_details_rows['ccity']; ?>
+                 <?php echo $rs_contact_rows['caddress1'] . ', ' . $rs_contact_rows['caddress2'] . ', ' . $rs_contact_rows['caddress3'] . ', ' . $rs_contact_rows['csuburb'] . ', ' . $rs_contact_rows['ccity']; ?>
                  However if there is no address available the innerHTML of the td displays na, na, na, na. This if statement is to prevent that from displaying.
                  -->
-                 <?php if ($rs_contact_details_rows['caddress1'] === 'na' || $rs_contact_details_rows['caddress2'] === 'na' || $rs_contact_details_rows['caddress3'] === 'na' || $rs_contact_details_rows['csuburb'] === 'na') {
+                 <?php if ($rs_contact_rows['caddress1'] === 'na' || $rs_contact_rows['caddress2'] === 'na' || $rs_contact_rows['caddress3'] === 'na' || $rs_contact_rows['csuburb'] === 'na') {
 
-                 echo $rs_contact_details_rows['ccity'];
+                 echo $rs_contact_rows['ccity'];
 
-                 } elseif ($rs_contact_details_rows['caddress1'] !== 'na' || $rs_contact_details_rows['caddress2'] !== 'na' || $rs_contact_details_rows['caddress3'] !== 'na' || $rs_contact_details_rows['csuburb'] !== 'na') {
+                 } elseif ($rs_contact_rows['caddress1'] !== 'na' || $rs_contact_rows['caddress2'] !== 'na' || $rs_contact_rows['caddress3'] !== 'na' || $rs_contact_rows['csuburb'] !== 'na') {
 
-                 echo $rs_contact_details_rows['caddress1'] . ', ' . $rs_contact_details_rows['caddress2'] . ', ' . $rs_contact_details_rows['caddress3'] . ', ' . $rs_contact_details_rows['csuburb'] . ', ' . $rs_contact_details_rows['ccity'];
+                 echo $rs_contact_rows['caddress1'] . ', ' . $rs_contact_rows['caddress2'] . ', ' . $rs_contact_rows['caddress3'] . ', ' . $rs_contact_rows['csuburb'] . ', ' . $rs_contact_rows['ccity'];
 
                  } ?>
              </td>
@@ -120,14 +113,14 @@ if (isset($_GET['kid']) && $_GET['kid'] !== '') {
 
            <form method="get" action="contact-details-update-display.php">
              <button>Update</button>
-             <input type="hidden" name="txtId" value="<?php echo $rs_contact_details_rows['cid'];?>">
+             <input type="hidden" name="txtId" value="<?php echo $rs_contact_rows['cid'];?>">
              <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
            </form>
 
          </div>
 
          <p>
-              <small><i>Last Modified:  <?php echo $rs_contact_details_rows['cmodified']; ?></i></small>
+              <small><i>Last Modified:  <?php echo $rs_contact_rows['cmodified']; ?></i></small>
          </p>
 
 

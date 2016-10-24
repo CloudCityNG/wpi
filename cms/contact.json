@@ -1,0 +1,21 @@
+{
+  "@context": "www.schema.org",
+  "@type": "Organization",
+  "name": "Women Playwrights International Conference",
+  "url": "https://www.wpi.org",
+  "sameAs": "https://www.facebook.com/Women-Playwrights-International-Conference-2015-203222756511598/ ",
+  "contactPoint":
+  {
+    "@type": "contactPoint",
+    "name": "Amy Jephta",
+    "email": "wpic2015gmail.com",
+    "address":
+    {
+      "streetAddress": "Drama Department, Hiddigh Campus, 32 Orange Street",
+      "addressRegion": "Western Cape",
+      "addressLocality": "Cape Town",
+      "postalCode": "8001",
+      "addressCountry": "South Africa"
+    }  
+  }
+}

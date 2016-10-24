@@ -4,32 +4,31 @@
 //Connect to MYSQL Server
 require('inc-conn.php');
 
-
-// SELECT ALL galleries
-$sql_galleries = "SELECT * FROM  tblgalleries JOIN tblconferences ON tblconferences.cid = tblgalleries.cid";
+// SELECT ALL IMAGES
+$sql_photos = "SELECT * FROM  tblphotos";
 
 // YEARS QUERY
-$sql_year ="SELECT cyear FROM tblconferences";
-$rs_year = mysqli_query($vconn_wpi, $sql_galleries);
+$sql_year = "SELECT cyear, cid FROM tblconferences";
+$rs_year = mysqli_query($vconn_wpi, $sql_year);
 $rs_year_rows = mysqli_fetch_assoc($rs_year);
 $rs_year_rows_total = mysqli_num_rows($rs_year);
 
-// CHecks to see if results are filtered
+// Checks to see if results are filtered
 
-if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
+if(isset($_GET['filter']) && $_GET['filter'] === 'true') {
 
-  $conId = $_POST['txtYear'];
+  $conId = $_GET['txtYear'];
 
-  $sql_galleries = "SELECT * FROM  tblgalleries JOIN tblconferences ON tblconferences.cid = tblgalleries.cid WHERE tblgalleries.cid = $conId";
+  $sql_photos = "SELECT * FROM  tblphotos JOIN tblconferences ON tblconferences.cid = tblphotos.cid WHERE tblphotos.cid = $conId";
 
 }
   //Execute SQL statement
-  $rs_galleries = mysqli_query($vconn_wpi, $sql_galleries);
+  $rs_photos = mysqli_query($vconn_wpi, $sql_photos);
 
   //Create associative Array
-  $rs_galleries_rows = mysqli_fetch_assoc($rs_galleries);
+  $rs_photos_rows = mysqli_fetch_assoc($rs_photos);
 
-  $rs_galleries_rows_total = mysqli_num_rows($rs_galleries);
+  $rs_photos_rows_total = mysqli_num_rows($rs_photos);
 
 ?>
 <!DOCTYPE html>
@@ -58,7 +57,7 @@ if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
 
           <!-- Page title -->
           <div class="page-header">
-            <h2>Galleries<h2>
+            <h2>photos<h2>
           </div>
 
         </header>
@@ -66,81 +65,118 @@ if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
         <!-- MAIN CONTENT SECTION -->
         <section id="main-content" class="base">
 
-          <!-- FILTERS RESULTS -->
+          <!-- FILTERS RESULTS -------------------------------------->
           <div class="filter">
-            <h3>
-            <?php if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
-              $conYear = $rs_galleries_rows['cyear'];
 
-              echo $conYear;
+            <h3>
+            <?php if(isset($_GET['filter']) && $_GET['filter'] === 'true') {
+              $conYear = $rs_photos_rows['cyear'];
+
+              echo "Showing images for $conYear";
             }?>
           </h3>
-          <form action="galleries-display.php" method="post">
-            <label>Conference</label>
+
+          <form action="galleries-display.php" method="get">
+            <label>Year</label>
             <select name="txtYear">
+
               <?php do { ?>
               <option value="<?php echo $rs_year_rows['cid']; ?>"><?php echo $rs_year_rows['cyear']; ?></option>
 
               <?php } while($rs_year_rows = mysqli_fetch_assoc($rs_year)) ?>
+
             </select>
 
             <input name="filter" type="hidden" value="true"></input>
 
-            <input class="button" type="submit" value="Filter">
+            <input class="button" type="submit" value="Apply">
+            <a href="galleries-display.php">Remove Filters</a>
 
           </form>
         </div>
 
-          <?php if($rs_galleries_rows_total > 0) { ?>
+
+
+        <!-- DISPLAY RESULTS ----------------------------------------->
+
+          <?php if($rs_photos_rows_total > 0) { ?>
+
+          <div class="photo-gallery">
 
           <?php do { ?>
-            <div class="team-card" id="galleries<?php echo $rs_galleries_rows['pid']; ?>">
 
-              <table cellspacing="0" class="tbldatadisplay">
+            <div class="photo-details">
+              <figure>
 
-                <tr class="tbl-heading">
+                <img src="../assets/uploads/galleries/large/<?php echo $rs_photos_rows['guri']; ?>">
 
-                  <td colspan="5">
-                    <strong><?php echo $rs_galleries_rows['ptitle']; ?></strong>
-                  </td>
-                  <td class=button-set >
-                    <form method="post" action="galleries-update-display.php">
-                      <button>Edit <span class="fa fa-pencil"></span></button>
-                      <input type="hidden" name="txtId" value="<?php echo $rs_galleries_rows['pid'];?>">
-                      <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
-                    </form>
+              </figure>
 
-                    <button type="button" class="danger-btn" name="btnDel" data-security="<?php echo $_SESSION['svSecurity']; ?>" data-id="<?php echo $rs_galleries_rows['cid']; ?>" >Delete <span class="fa fa-trash-o"></span></button>
-                  </td>
+              <div class="photo-caption">
 
-                </tr>
-                <tr>
-                  <td width="100" class="accent"><strong>Author</strong></td>
-                  <td colspan="4">
-                    <?php echo $rs_galleries_rows['pauthorname'] . " " . $rs_galleries_rows['pauthorsurname']; ?>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="100" class="accent"><strong>Synopsis</strong></td>
-                  <td colspan="4">
-                    <?php echo $rs_galleries_rows['psynopsis']; ?>
-                  </td>
-                </tr>
+                <?php if($rs_photos_rows['gcaption'] !== 'na' || $rs_photos_rows['gdescription'] !== 'na') {?>
 
-              </table>
+                <h4>Caption</h4>
+                <p><?php echo $rs_photos_rows['gcaption']; ?><p>
+
+                <h4>Description</h4>
+                <p><?php echo $rs_photos_rows['gdescription']; ?><p>
+                <?php } ?>
+
+                <div class="button-set">
+                  <button name="imgEdit" data-id="<?php echo $rs_photos_rows['gid']; ?>" data-img="<?php echo $rs_photos_rows['guri']; ?>" data-caption="<?php echo $rs_photos_rows['gcaption']; ?>" data-description="<?php echo $rs_photos_rows['gdescription']; ?>">Edit</button>
+                  <button class="danger-btn">Delete</button>
+                </div>
 
             </div>
 
-          <?php } while($rs_galleries_rows = mysqli_fetch_assoc($rs_galleries)) ?>
+          </div>
+
+          <?php } while($rs_photos_rows = mysqli_fetch_assoc($rs_photos)) ?>
+
+          </div>
 
           <div class="clearfix"></div>
 
           <?php } else {?>
 
-            <h2 class="accent">There are no galleries to display</h2>
-            <p>Create a new event by navigating to <a href="galleries-add-new.php" title="Create a new event"><i>galleries > Add Conference</i></a>.
+            <h2 class="accent">There are no photos to display</h2>
+            <p>Create a new event by navigating to <a href="photos-add-new.php" title="Create a new event"><i>photos > Add Gallery</i></a>.
 
           <?php }?>
+
+
+
+          <!-- SIDEBAR TO EDIT IMAGE CAPTION AND DESCRIPTION ---------------->
+
+          <div id="editSidebar">
+
+            <form class="form sidebar" action="galleries-edit-process.php" method="post">
+              <h3 class="accent">Edit Image</h3>
+
+              <figure>
+                <img id="activeImg" src="">
+              </figure>
+
+              <label>Caption</label>
+              <input id="activeCaption" type="text" name="txtCaption">
+
+              <label>Description</label>
+              <textarea id="activeDescription" name="txtDescription"></textarea>
+
+              <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
+
+              <input id="editId" type="hidden" name="txtId" value="">
+
+              <div class="button-set">
+                <input type="submit" value="Save">
+                <span class="button danger-btn" name="cancelBtn">Cancel</span>
+              </div>
+
+
+            </form>
+
+          </div>
 
         </section>
 
@@ -171,7 +207,7 @@ if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
       function deleteRecord(info, btn) {
         $.ajax({
           type: 'POST',
-          url: 'galleries-delete-ajax-process.php',
+          url: 'photos-delete-ajax-process.php',
           data: {
             'txtId': info.id,
             'txtSecurity': info.security
@@ -191,6 +227,35 @@ if(isset($_POST['filter']) && $_POST['filter'] === 'true') {
           }
         });
       }
+
+
+      $(':button[name="imgEdit"]').on('click', function() {
+        var info = $(this).data();
+
+        // assign values to elements
+        $('#activeImg').attr('src', `../assets/uploads/galleries/large/${info.img}`);
+
+        if(info.caption !== 'na') {
+          $('#activeCaption').val(info.caption);
+        }
+
+        if(info.description !== 'na') {
+          $('#activeDescription').html(info.description);
+        }
+
+        $('#editId').val(info.id);
+
+        document.getElementById('editSidebar').style.right = 0;
+      });
+
+      $('span[name="cancelBtn"]').on('click', function() {
+        document.getElementById('editSidebar').style.right = '-30%';
+
+        // Empty input fields
+          $('#activeCaption').val('');
+          $('#activeDescription').html('');
+          $('#editId').val('');
+      });
 
     });
 

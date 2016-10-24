@@ -64,7 +64,7 @@ function displayTxt($keyValue){
 
           <!-- Page title -->
           <div class="page-header">
-            <h2>Create Gallery | 1 of 2</h2>
+            <h2>Add to Gallery</h2>
           </div>
 
         </header>
@@ -76,13 +76,9 @@ function displayTxt($keyValue){
 
           <form id="form" class="form" action="galleries-add-process.php" method="post" enctype="multipart/form-data">
 
+            <!-- SELECT GALLERY -->
+
             <h3 class="accent">Gallery settings</h3>
-
-            <label>Title</label>
-            <input type="text" name="txtTitle">
-
-            <label>Description</label>
-            <textarea name="txtDescription"></textarea>
 
             <label>Conference Year</label>
 
@@ -94,16 +90,48 @@ function displayTxt($keyValue){
 
             </select>
 
-            <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
+            <!-- ADD IMAGES -->
 
+            <h3 class="accent">Upload Images <i class="fa fa-picture-o"></i></h3>
+
+            <label>Select images to upload. Each image must be a jpeg file and smaller than 2MB</label>
+            <input type="file" name="txtImg[]" onchange="displayImg();" autocomplete="off" autofocus required accept="image/jpeg, image/png" multiple >
+
+            <div class="line"></div>
+
+            <div>
+
+              <?php if(isset($_GET['kerrors']) && $_GET['kerrors'] !== '') {
+
+                $errorLog = explode(', ', $_GET['kerrors'] );
+                ?>
+
+                <ul>
+
+                  <?php foreach ($errorLog as $value) {
+                    echo "<li>$value</li>";
+                  }?>
+
+                </ul>
+
+              <?php } ?>
+
+            </div>
+            <div id="preview"></div>
+
+            <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
+            <input type="hidden" name="txtId" value="<?php echo $vid; ?>">
+
+
+            <input type="hidden" name="txtSecurity" value="<?php echo $_SESSION['svSecurity']; ?>">
 
             <!-- Button set -->
             <div class="button-set">
 
               <!-- submit form -->
-              <button type="submit" name="btnAddNew">Upload <span class="fa fa-arrow-right"></span></button>
+              <button type="submit" name="btnAddNew">Save <span class="fa fa-check"></span></button>
 
-              <a class="button danger-btn" href="events-display.php" name="btnCancel">Cancel <span class="fa fa-times"></span></a>
+              <a class="button danger-btn" href="galleries-display.php" name="btnCancel">Cancel <span class="fa fa-times"></span></a>
 
             </div>
 
@@ -117,5 +145,41 @@ function displayTxt($keyValue){
     </div>
 
     <script src="js/accordian.js"></script>
+    <script>
+
+      function displayImg() {
+
+        // creates an array of all files selected by user
+        var images = document.querySelector('input[name="txtImg[]"]').files;
+        var preview = document.getElementById('preview');
+
+          function readAndPreview(img) {
+            console.log('meh');
+            var reader = new FileReader();
+
+            reader.addEventListener('load', function() {
+
+              // creates new image object
+              var image = new Image();
+
+              image.height = 200;
+              image.title = img.name;
+              image.src = this.result;
+
+              preview.appendChild(image);
+
+            }, false);
+
+            reader.readAsDataURL(img);
+
+          }
+
+        if (images) {
+          [].forEach.call(images, readAndPreview);
+        }
+
+      }
+
+    </script>
   </body>
 </html>

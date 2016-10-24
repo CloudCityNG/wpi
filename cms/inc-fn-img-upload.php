@@ -1,5 +1,7 @@
 <?php
 
+  //TODO FIX ERROR HANDLING
+
   // Check file is a a jpeg returns a boolean of true if the img is a jpg
   function is_jpg($img_tmp) {
 
@@ -15,6 +17,8 @@
     }
 
   } // End of is_jpg fn
+
+
 
   // Resizes image to specified size based on width
   function img_resize($img_tmp, $img_new_width) {
@@ -39,8 +43,8 @@
   } // End of img_resize fn
 
 
-  
 
+  // Uploads image to dir
   function upload($img, $dir, $img_name) {
 
     $img_upload_path = $dir . $img_name;
@@ -52,7 +56,7 @@
 
 
 
-
+  // Checks the image file extension and size
   function img_check($img_tmp, $img_size) {
 
     // check that img file is a jpg
@@ -66,11 +70,15 @@
 
       } else {
 
+        array_push($error, 'Image exceeds maximum size. Please select a smaller image.');
+
         return false;
 
       } // end size check statement
 
     } else {
+
+      array_push($error, 'Selected image is not a jpeg. Please select a jpeg image.');
 
       return false;
 
@@ -78,7 +86,9 @@
 
   }
 
-    // loads an array of images to server and returns an array as a string
+
+
+  // loads an array of images to server and returns an array as a string
   function multi_img_upload($name, $dir, $size = 300) {
       $img_arr = array();
 

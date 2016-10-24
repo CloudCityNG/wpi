@@ -7,15 +7,13 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
   // --------------- USER INPUT VALIDATION -------------------------
   include('inc-fn-sanitize.php');
 
-  $vConId = sanitize('txtYear', 'int');
+  $vId = sanitize('txtId', 'int');
+  $vCaption = sanitize('txtCaption');
+  $vDescription = sanitize('txtDescription');
 
-  // ------------------------ IMAGE UPLOAD --------------------------
-  include('inc-fn-img-upload.php');
-
-  $vImg = multi_img_upload('txtImg', '../assets/uploads/galleries/large/');
 
   // ---------------------- CHECK VALIDATION -----------------------
-  if($vConId && $vImg) {
+  if($vCaption && $vDescription ) {
 
     // Connect to mysql server
     require('inc-conn.php');
@@ -26,22 +24,14 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
     // Connect to mysql server
     require('inc-conn.php');
 
-    // convert string to array
-    $vNewImg_arr = explode(', ', $vImg);
-
-    // foreach value in image array insert into database
-    foreach($vNewImg_arr as $value) {
-
       // Building query string
-      $sql_insert = sprintf("INSERT INTO tblphotos (guri, cid) VALUES (%s, %u)",
-        escapestring($vconn_wpi, $value, 'text'),
-        escapestring($vconn_wpi, $vConId, 'int')
+      $sql_update = sprintf("UPDATE tblphotos SET gcaption = %s, gdescription = %s WHERE gid = $vId",
+        escapestring($vconn_wpi, $vCaption, 'text'),
+        escapestring($vconn_wpi, $vDescription, 'text')
       );
 
       // Execute insert statement
-      $vinsert_results = mysqli_query($vconn_wpi, $sql_insert);
-
-    } // end of foreach
+      $vinsert_results = mysqli_query($vconn_wpi, $sql_update);
 
 
     if($vinsert_results) {
@@ -59,8 +49,6 @@ if(isset($_POST['txtSecurity']) && $_POST['txtSecurity'] === $_SESSION['svSecuri
 
   } else {
 
-    $perror = implode(', ', $error);
-    
     // Validation failed
     $qs = "?kval=failed";
     $qs .= "&kerrors=".urlencode($perror);

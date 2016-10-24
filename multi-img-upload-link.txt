@@ -1,0 +1,24 @@
+## Link to Multi File/Image Upload
+
+https://github.com/3leanore/creativeangels/blob/master/cms/inc-fn-img-upload.php
+
+Function returns a string containing the URI of images. If the upload failed function will come back as ```false```
+
+### Usage
+
+```
+$vImg = multi_img_upload('txtImg','path/to/folder', 600 );
+
+```
+
+### Validation
+
+```
+
+if($vImg){
+  // Validation passed
+} else {
+  // Validation failed
+}
+
+```
